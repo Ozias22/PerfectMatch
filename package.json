@@ -1,7 +1,7 @@
 {
-  "name": "projet-web",
+  "name": "perfectmatch",
   "version": "1.0.0",
-  "description": "",
+  "description": "Application web de rencontre développée avec Django, Bootstrap et Sass.",
   "main": "index.js",
   "dependencies": {
     "bootstrap": "^5.3.8",
@@ -10,17 +10,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-css": "sass PerfectMatch/static/scss/styles.scss PerfectMatch/static/css/styles.css"
-
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Ozias22/Projet-Web.git"
+    "url": "git+https://github.com/Ozias22/PerfectMatch.git"
   },
-  "keywords": [],
+  "keywords": [
+    "django",
+    "dating-app",
+    "matchmaking",
+    "bootstrap",
+    "sass"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Ozias22/Projet-Web/issues"
+    "url": "https://github.com/Ozias22/PerfectMatch/issues"
   },
-  "homepage": "https://github.com/Ozias22/Projet-Web#readme"
+  "homepage": "https://github.com/Ozias22/PerfectMatch#readme"
 }
