@@ -1,19 +1,14 @@
 import json
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Q
-from .forms import InscriptionForm, AbonnementForm,ConnectionForm,ProfilForm,userProfileForm,ImagesUserForm,TestCompatibiliteForm
+from .forms import InscriptionForm, AbonnementForm, ConnectionForm, ProfilForm, userProfileForm, ImagesUserForm, TestCompatibiliteForm
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from .models import User, UserProfile, ImagesUser, Compatibilite, Message, Match
 from django.core import serializers
-from django.db.models import Q
-from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from datetime import date
-from django.db.models.functions import Random
 from datetime import date
 from django.db.models.functions import Random
 
@@ -40,7 +35,7 @@ def valider_abonement(request):
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS, "Votre abonnement a été validé avec succès !")
-            return redirect("connecter_compte")
+            return redirect("connexion")
         else:
             messages.add_message(request, messages.ERROR, "Veuillez corriger les erreurs ci-dessous.")
 
@@ -475,4 +470,4 @@ def supprimer_image(request,id):
     except ImagesUser.DoesNotExist:
         return JsonResponse({"success": False, "error": "Image introuvable"})
 
-    return redirect('profilPerfectMatch')
+    return JsonResponse({"success": True})
