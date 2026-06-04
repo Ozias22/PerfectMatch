@@ -366,8 +366,10 @@ if (_applyFiltersBtn) {
         profils = data.profiles;
         imagesProfils = data.Images;
 
-        if (divProfils) divProfils.innerHTML = ""; // Clear old stack
-        afficherProfils();         // Show filtered stack
+        if (divProfils) {
+            divProfils.innerHTML = ""; // Clear old stack
+            afficherProfils();         // Show filtered stack
+        }
     });
 }
 
@@ -375,7 +377,9 @@ if (_applyFiltersBtn) {
 
 function initialisation() {
     console.log("Script loaded successfully.");
-    DefinirDonnees().then(afficherProfils);
+    if (divProfils) {
+        DefinirDonnees().then(afficherProfils);
+    }
     supprimerImage();
 }
 
