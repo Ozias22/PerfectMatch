@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Abonement, UserProfile,ImagesUser
+from .models import User, Abonement, UserProfile, ImagesUser
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 import datetime
@@ -228,47 +228,6 @@ class InscriptionForm(UserCreationForm):
             user.save()
         return user
 
-User = get_user_model()
-
-class ProfilForm(forms.ModelForm):
-    age = forms.IntegerField(
-        label="Âge",
-        required=False,
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'readonly': 'readonly'})
-    )
-
-    class Meta:
-        model = User
-        fields = [
-            'photo_profil', 'first_name', 'last_name',
-            'city', 'country', 'email'
-        ]
-        labels = {
-            'photo_profil': "Photo de profil",
-            'first_name': "Prénom",
-            'last_name': "Nom",
-            'city': "Ville",
-            'country': "Pays",
-            'email': "Email",
-        }
-        widgets = {
-            'photo_profil': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'city': forms.TextInput(attrs={'class': 'form-control'}),
-            'country': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if self.instance and self.instance.birthday:
-            today = datetime.date.today()
-            age = today.year - self.instance.birthday.year - (
-                (today.month, today.day) < (self.instance.birthday.month, self.instance.birthday.day)
-            )
-            self.fields['age'].initial = age
-
 
 class AbonnementForm(forms.ModelForm):
     """Permet à un utilisateur de choisir un abonnement"""
@@ -276,7 +235,7 @@ class AbonnementForm(forms.ModelForm):
         model = Abonement
         fields = ['type_abonement', 'card_number', 'expiration_date','cvv']
         widgets = {
-            'type_abonnement': forms.Select(attrs={'class': 'd-none', 'id': 'type_abonnement'}),
+            'type_abonement': forms.Select(attrs={'class': 'd-none', 'id': 'type_abonement'}),
             'card_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '1234 5678 9012 3456'}),
             'expiration_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'cvv': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '123'}),
@@ -285,7 +244,7 @@ class AbonnementForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Mail'}),
         }
         error_messages = {
-            'type_abonnement': {
+            'type_abonement': {
                 'required': "Veuillez sélectionner un type d'abonnement."
             },
             'card_number': {
@@ -318,8 +277,6 @@ class AbonnementForm(forms.ModelForm):
         if expiration_date < datetime.date.today():
             raise ValidationError("La date d'expiration ne peut pas être dans le passé.")
         return expiration_date
-
-User = get_user_model()
 
 
 class ProfilForm(forms.ModelForm):

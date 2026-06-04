@@ -1,14 +1,14 @@
 "use strict";
 
 // Données globales
-const  divProfils = document.getElementById("bloc_profils");
+const divProfils = document.getElementById("bloc_profils");
 const btnJaime = document.getElementById("jaime");
 const btnJaimePas = document.getElementById("!jaime");
 let isAnimating = false
 var profils;
 var imagesProfils;
 
-divProfils.classList.add('card-stack');
+if (divProfils) divProfils.classList.add('card-stack');
 const imgDefaut = '/media/images/profiles/default.jpg';
 
 
@@ -309,17 +309,6 @@ function gestionInteractions(data){
     }
 }
 
-function testCompatibilite(match_id){
-    fetch(`/api/compatibilite/${match_id}/`, {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: 'param1=valeur1&param2=valeur2'
-});
-
-}
-
 async function RecupereProfils(){
     try{
         const response = await fetch('/api/obtenir_profil/');
@@ -339,42 +328,48 @@ async function RecupereProfils(){
 }
 
 // Toggle filter panel
-document.getElementById("btn-filters").addEventListener("click", () => {
-    const panel = document.getElementById("filter-panel");
-    panel.style.display = panel.style.display === "none" ? "block" : "none";
-});
+const _btnFilters = document.getElementById("btn-filters");
+if (_btnFilters) {
+    _btnFilters.addEventListener("click", () => {
+        const panel = document.getElementById("filter-panel");
+        panel.style.display = panel.style.display === "none" ? "block" : "none";
+    });
+}
 
 // Apply filters
-document.getElementById("apply-filters").addEventListener("click", async () => {
+const _applyFiltersBtn = document.getElementById("apply-filters");
+if (_applyFiltersBtn) {
+    _applyFiltersBtn.addEventListener("click", async () => {
 
-    const gender = document.getElementById("filter-gender").value;
-    const country = document.getElementById("filter-country").value;
-    const city = document.getElementById("filter-city").value;
-    const minAge = document.getElementById("filter-age-min").value;
-    const maxAge = document.getElementById("filter-age-max").value;
+        const gender = document.getElementById("filter-gender").value;
+        const country = document.getElementById("filter-country").value;
+        const city = document.getElementById("filter-city").value;
+        const minAge = document.getElementById("filter-age-min").value;
+        const maxAge = document.getElementById("filter-age-max").value;
 
-    // Build query string
-    const params = new URLSearchParams();
+        // Build query string
+        const params = new URLSearchParams();
 
-    if (gender) params.append("gender", gender);
-    if (country) params.append("country", country);
-    if (city) params.append("city", city);
-    if (minAge) params.append("min_age", minAge);
-    if (maxAge) params.append("max_age", maxAge);
+        if (gender) params.append("gender", gender);
+        if (country) params.append("country", country);
+        if (city) params.append("city", city);
+        if (minAge) params.append("min_age", minAge);
+        if (maxAge) params.append("max_age", maxAge);
 
-    const url = `/api/obtenir_profil/?${params.toString()}`;
+        const url = `/api/obtenir_profil/?${params.toString()}`;
 
-    console.log("Calling:", url);
+        console.log("Calling:", url);
 
-    const response = await fetch(url);
-    const data = await response.json();
+        const response = await fetch(url);
+        const data = await response.json();
 
-    profils = data.profiles;
-    imagesProfils = data.Images;
+        profils = data.profiles;
+        imagesProfils = data.Images;
 
-    divProfils.innerHTML = ""; // Clear old stack
-    afficherProfils();         // Show filtered stack
-});
+        if (divProfils) divProfils.innerHTML = ""; // Clear old stack
+        afficherProfils();         // Show filtered stack
+    });
+}
 
 
 
@@ -382,37 +377,9 @@ function initialisation() {
     console.log("Script loaded successfully.");
     DefinirDonnees().then(afficherProfils);
     supprimerImage();
-    // afficherProfils()
-    applyFilters();
 }
 
 window.addEventListener('DOMContentLoaded', initialisation);
-function applyFilters() {
-    const filterForm = document.getElementById("filter-panel");
-    const applyBtn = document.getElementById("apply-filters");
-
-    if (filterForm) {
-        filterForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            console.log("Applicage des filtres...");
-
-            const gender = document.getElementById("filter-gender").value;
-            const country = document.getElementById("filter-country").value;
-            const city = document.getElementById("filter-city").value;
-            const minAge = document.getElementById("filter-age-min").value;
-            const maxAge = document.getElementById("filter-age-max").value;
-
-            applyFilters({
-                gender,
-                country,
-                city,
-                minAge,
-                maxAge
-            });
-        });
-    }
-}
 
 
 function supprimerImage() {
@@ -492,31 +459,3 @@ function toggleNotifications() {
         })
         .catch(err => console.error("Erreur notifications:", err));
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const filterForm = document.getElementById("filter-panel");
-    const applyBtn = document.getElementById("apply-filters");
-
-    if (filterForm) {
-        filterForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            console.log("Applicage des filtres...");
-
-            const gender = document.getElementById("filter-gender").value;
-            const country = document.getElementById("filter-country").value;
-            const city = document.getElementById("filter-city").value;
-            const minAge = document.getElementById("filter-age-min").value;
-            const maxAge = document.getElementById("filter-age-max").value;
-
-            applyFilters({
-                gender,
-                country,
-                city,
-                minAge,
-                maxAge
-            });
-        });
-    }
-});

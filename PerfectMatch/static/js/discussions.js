@@ -78,6 +78,6 @@ async function envoyerMessage() {
 
 
 window.addEventListener("DOMContentLoaded", loadDiscussions);
-let btnEnvoyer = document.getElementById("send-btn");
-btnEnvoyer.addEventListener("click", () => envoyerMessage());
+const btnEnvoyer = document.getElementById("send-btn");
+if (btnEnvoyer) btnEnvoyer.addEventListener("click", () => envoyerMessage());
 
